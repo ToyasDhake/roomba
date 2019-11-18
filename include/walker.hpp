@@ -43,8 +43,19 @@ class Walker {
     DistanceCalculation depth;
 
  public:
+    /**
+    * @brief Constructor Walker initialize everything
+    */
     Walker();
+    /**
+    * @brief Destructor Walker stops robot and deletes everything
+    */
     ~Walker();
+    /**
+    * @brief Function controls motion of robot. It goes straight ahead if there 
+    * is no obstacle in front of it. If it detects obstacle then it will start 
+    * turning untill there is no obstacle in front of it.
+    */
     void walk();
 };
 

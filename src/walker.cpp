@@ -27,44 +27,48 @@
 #include "walker.hpp"
 
 Walker::Walker() {
-  velocity = nh.advertise <geometry_msgs::Twist>
- ("/mobile_base/commands/velocity", 1000);
-  distanceList = nh.subscribe <sensor_msgs::LaserScan>
- ("/scan", 50, &DistanceCalculation::findDepth, &depth);
-
-  msg.linear.x = 0.0;
-  msg.linear.y = 0.0;
-  msg.linear.z = 0.0;
-  msg.angular.x = 0.0;
-  msg.angular.y = 0.0;
-  msg.angular.z = 0.0;
-  velocity.publish(msg);
+    // Constructor initialize everything
+    velocity = nh.advertise <geometry_msgs::Twist>
+                                       ("/mobile_base/commands/velocity", 1000);
+    distanceList = nh.subscribe <sensor_msgs::LaserScan>
+                         ("/scan", 50, &DistanceCalculation::findDepth, &depth);
+    msg.linear.x = 0.0;
+    msg.linear.y = 0.0;
+    msg.linear.z = 0.0;
+    msg.angular.x = 0.0;
+    msg.angular.y = 0.0;
+    msg.angular.z = 0.0;
+    velocity.publish(msg);
 }
 
 void Walker::walk() {
-  ros::Rate loop_rate(10);
-  while (ros::ok()) {
-    if (depth.isCollision()) {
-      msg.linear.x = 0.0;
-      msg.angular.z = 3.0;
-    } else {
-      msg.linear.x = 0.5;
-      msg.angular.z = 0.0;
+    // Set Limit to refresh rate
+    ros::Rate loop_rate(10);
+    while (ros::ok()) {
+        if (!depth.isCollision()) {
+            // If robot is not colliding go straight
+            msg.linear.x = 0.5;
+            msg.angular.z = 0.0;
+        } else {
+            // If robot is going to collide rotate
+            msg.linear.x = 0.0;
+            msg.angular.z = 3.0;
+        }
+        velocity.publish(msg);
+        ros::spinOnce();
+        loop_rate.sleep();
     }
-    velocity.publish(msg);
-    ros::spinOnce();
-    loop_rate.sleep();
-  }
 }
 
 Walker::~Walker() {
-  msg.linear.x = 0.0;
-  msg.linear.y = 0.0;
-  msg.linear.z = 0.0;
-  msg.angular.x = 0.0;
-  msg.angular.y = 0.0;
-  msg.angular.z = 0.0;
-  velocity.publish(msg);
+    // Destructor stops robot and deletes everything
+    msg.linear.x = 0.0;
+    msg.linear.y = 0.0;
+    msg.linear.z = 0.0;
+    msg.angular.x = 0.0;
+    msg.angular.y = 0.0;
+    msg.angular.z = 0.0;
+    velocity.publish(msg);
 }
 
 

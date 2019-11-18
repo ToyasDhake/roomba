@@ -28,26 +28,27 @@
 #include "Distance.hpp"
 
 DistanceCalculation::DistanceCalculation() {
-  collision = false;
+    collision = false;
 }
 
 DistanceCalculation::~DistanceCalculation() {
 }
 
 bool DistanceCalculation::isCollision() {
-  return collision;
+    // Return if robot is colliding
+    return collision;
 }
 
 
 void DistanceCalculation::findDepth
-(const sensor_msgs::LaserScan::ConstPtr& msg) {
-  for (auto temp : msg->ranges) {
-    if (msg->ranges[temp] < 0.8) {
-      collision = true;
-      return;
+                                (const sensor_msgs::LaserScan::ConstPtr& msg) {
+    for (auto temp : msg->ranges) {
+        if (msg->ranges[temp] < 0.8) {
+            collision = true;
+            return;
+        }
     }
-  }
-  collision = false;
+    collision = false;
 }
 
 

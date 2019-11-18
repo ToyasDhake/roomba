@@ -31,21 +31,31 @@
 #include "geometry_msgs/Twist.h"
 #include "sensor_msgs/LaserScan.h"
 
-
-
-
-
 class DistanceCalculation {
  private:
-  bool collision = false;
+    bool collision = false;
 
  public:
-  DistanceCalculation();
-  ~DistanceCalculation();
-  bool isCollision();
-  void findDepth(const sensor_msgs::LaserScan::ConstPtr& msg);
+    /**
+    * @brief Constructor DistanceCalculation sets collision flag
+    */
+    DistanceCalculation();
+    /**
+    * @brief Destructor DistanceCalculation deletes object
+    */
+    ~DistanceCalculation();
+    /**
+    * @brief Function returns true if the robot is going to collide with an 
+    * obstacle else returns false
+    * @return bool collision
+    */
+    bool isCollision();
+    /**
+    * @brief Function calculates distance of obstacle from robot and based on it 
+    * sets collision flag.
+    * @param msg type sensor_msgs::LaserScan
+    */
+    void findDepth(const sensor_msgs::LaserScan::ConstPtr& msg);
 };
 
 #endif  // INCLUDE_DISTANCE_HPP_
-
-
