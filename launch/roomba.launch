@@ -4,7 +4,7 @@
     <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
         <arg name="world_file" value="$(find roomba)/worlds/roombaWorld.world"/>
     </include>
-    <arg name = "record_flag" default= "false" />
+    <arg name = "record" default= "false" />
 
     <node
         pkg="roomba"
@@ -13,5 +13,10 @@
         output="screen"
     />
 
-
+    <node
+        pkg= "rosbag"
+        name="record"
+        type="record"
+        args="-a -x /camera/(.*) -O $(find roomba)/results/roombatopics.bag"
+        if="$(eval record == true)"/>
 </launch>
