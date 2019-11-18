@@ -36,6 +36,7 @@ cd <catkin_workspace>
 catkin_make
 source ./devel/setup.bash
 roslaunch roomba roomba.launch record_flag:=true
+```
 
 Inspect rosbag
 
